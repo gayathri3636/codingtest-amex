@@ -1,12 +1,38 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import React, {useState, Fragment} from 'react'
+import ReactDOM from 'react-dom'
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import Hello from './Hello'
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+function App() {
+  const [names, updateNames] = useState([])
+  const [currentName, updateCurrentName] = useState('')
+  const increment = () => {
+    updateNames([...names, currentName])
+  }
+  const decrement = () => {
+    let currentNames = names // make a separate copy of the array
+    let newNames = currentNames.slice(0, -1)
+    updateNames(newNames)
+  }
+  const handleChange = e => {
+    updateCurrentName(e.target.value)
+  }
+  return (
+    <Fragment>
+      <input onChange={handleChange} placeholder="User name" />
+      <button type = "button" class = "btn btn-outline-dark btn-sm-2" onClick={increment}>+</button>
+      <button type = "button" class = "btn btn-outline-dark btn-sm-2" onClick={decrement}>-</button>
+      <div>
+        {names.map(name => {
+          return (
+            <div>
+              <Hello name={name} />
+            </div>
+          )
+        })}
+      </div>
+    </Fragment>
+  )
+}
+
+ReactDOM.render(<App />, document.getElementById('root'))
